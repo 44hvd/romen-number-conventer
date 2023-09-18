@@ -9,7 +9,7 @@ Parameters:
   latestAmiId:
     Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
     Default: '/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64'
-  
+
   keyName:
     Description: Chose your key pair
     Type: AWS::EC2::KeyPair::KeyName
@@ -26,7 +26,7 @@ Resources:
         - !Ref mySecGrp
       Tags: 
         - Key: Name
-          Value: !Sub Web Server of ${AWS::StackName} Stack
+          Value: !Sub Web Server of ${AWS::StackName} Stack 
       UserData: !Base64 |
         #! /bin/bash
         yum update -y
@@ -35,11 +35,11 @@ Resources:
         pip3 install flask
         yum install git -y
         cd /home/ec2-user
-        wget -P templates https://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@raw.githubusercontent.com/44hvd/romen-number-conventer/main/templates/index.html
-        wget -P templates https://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@raw.githubusercontent.com/44hvd/romen-number-conventer/main/templates/result.html
-        wget https://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@raw.githubusercontent.com/44hvd/romen-number-conventer/main/roman-numerals-converter-app.py
+        wget -P templates https://raw.githubusercontent.com/44hvd/romen-number-conventer/main/templates/index.html
+        wget -P templates https://raw.githubusercontent.com/44hvd/romen-number-conventer/main/templates/result.html
+        wget https://raw.githubusercontent.com/44hvd/romen-number-conventer/main/app.py
         python3 romen-number-conventer-app.py
-     
+
   mySecGrp:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -58,11 +58,10 @@ Resources:
           FromPort: 8080
           ToPort: 8080
           CidrIp: 0.0.0.0/0
-      
   
 Outputs:
   WebsiteURL:
-    Value: !Sub
+    Value: !Sub 
       - http://${PIA}
       - PIA: !GetAtt myWebServer.PublicDnsName
     Description: Roman Numerals Converter Application URL
